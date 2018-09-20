@@ -1,5 +1,5 @@
 struct SelectedTile {
-  int x, y;
+  int x, y; // the grid position, not pixel positon
   int totalLife;
   int tickCount;
   bool isActive;
@@ -16,28 +16,25 @@ struct SelectedTile {
   void reset(int nx, int ny, Dir::Type dir) {
     x = nx;
     y = ny;
-    y += TILE_WIDTH; // adjust tile to be closer to feet than head
     switch(dir) {
       case Dir::Up:
-        y -= TILE_WIDTH;
+        y -= 1;
         break;
       case Dir::Down:
-        y += TILE_WIDTH;
+        y += 1;
         break;
       case Dir::Left:
-        x -= TILE_WIDTH;
+        x -= 1;
         break;
       case Dir::Right:
-        x += TILE_WIDTH;
+        x += 1;
         break;
     }
     // snap to grid
-    x = (x / TILE_WIDTH) * TILE_WIDTH;
-    y = (y / TILE_WIDTH) * TILE_WIDTH;
     totalLife = 10;
     tickCount = 0;
     isActive = true; 
-    sprite.setPosition(sf::Vector2f(x, y));
+    sprite.setPosition(sf::Vector2f(x * TILE_WIDTH, y * TILE_WIDTH));
   }
 
   void tick() {

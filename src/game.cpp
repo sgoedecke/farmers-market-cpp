@@ -56,21 +56,10 @@ int main() {
           window.close();
           break;
         case sf::Event::KeyPressed:
+          player.handleKeys();
           switch(event.key.code) {
-            case sf::Keyboard::W:
-              player.beginMove(Dir::Up);
-              break;
-            case sf::Keyboard::A:
-              player.beginMove(Dir::Left);
-              break;
-            case sf::Keyboard::S:
-              player.beginMove(Dir::Down);
-              break;
-            case sf::Keyboard::D:
-              player.beginMove(Dir::Right);
-              break;
             case sf::Keyboard::E:
-              selectedTile.reset(player.x, player.y, player.dir);
+              selectedTile.reset(player.gridX, player.gridY, player.dir);
               break;
             case sf::Keyboard::Escape :
               window.close();
@@ -78,9 +67,6 @@ int main() {
             default:
               break;
           }
-          break;
-        case sf::Event::KeyReleased:
-          player.isMoving = false;
           break;
         default:
           break;
