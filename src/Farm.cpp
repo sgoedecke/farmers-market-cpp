@@ -3,7 +3,7 @@ struct Radish {
   int y;
 };
 
-struct CropManager {
+struct Farm {
   sf::Texture radishTexture;
   sf::Sprite radishSprite;
   vector<Radish> radishes;

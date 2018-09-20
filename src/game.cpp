@@ -14,7 +14,7 @@ struct Dir { enum Type { Up, Down, Left, Right }; };
 #include "SelectedTile.cpp"
 #include "Player.cpp"
 #include "World.cpp"
-#include "CropManager.cpp"
+#include "Farm.cpp"
 
 int main() {
   sf::Clock textureClock;
@@ -31,8 +31,8 @@ int main() {
   SelectedTile selectedTile;
   selectedTile.loadTexture();
 
-  CropManager cropManager;
-  cropManager.loadTexture();
+  Farm farm;
+  farm.loadTexture();
 
   sf::RenderWindow window(sf::VideoMode(WORLD_WIDTH, WORLD_HEIGHT), "Grow");
   window.setFramerateLimit(60);
@@ -66,7 +66,7 @@ int main() {
           switch(event.key.code) {
             case sf::Keyboard::E:
               selectedTile.reset(player.gridX, player.gridY, player.dir);
-              cropManager.plantRadish(selectedTile.x, selectedTile.y);
+              farm.plantRadish(selectedTile.x, selectedTile.y);
               break;
             case sf::Keyboard::Escape :
               window.close();
@@ -83,8 +83,8 @@ int main() {
     // draw
     window.clear();
     window.draw(world.sprite);
+    farm.drawInto(&window);
     window.draw(player.sprite);
-    cropManager.drawInto(&window);
     if (selectedTile.isActive) {
       window.draw(selectedTile.sprite);
     }
