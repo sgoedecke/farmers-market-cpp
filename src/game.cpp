@@ -66,7 +66,7 @@ int main() {
           switch(event.key.code) {
             case sf::Keyboard::E:
               selectedTile.reset(player.gridX, player.gridY, player.dir);
-              farm.plantRadish(selectedTile.x, selectedTile.y);
+              farm.interactWithTile(selectedTile.x, selectedTile.y);
               break;
             case sf::Keyboard::Escape :
               window.close();
