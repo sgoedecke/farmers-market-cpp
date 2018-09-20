@@ -19,4 +19,5 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 * Turn structs into classes with header files - make code more idiomatic
 * Add the ability to plant crops
 * Add a day/night cycle
-* Add multiple tools: watering/harvesting/clearing land
+* Add an inventory with multiple tools: watering/harvesting/clearing land
+* Add text popups to explain stuff

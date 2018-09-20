@@ -8,7 +8,7 @@ struct SelectedTile {
   sf::Sprite sprite;
 
   void loadTexture() {
-    texture.loadFromFile("selectedtile.png");
+    texture.loadFromFile("./assets/selectedtile.png");
     sprite.setTexture(texture);
     sprite.setScale(SCALE);
   }

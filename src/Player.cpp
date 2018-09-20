@@ -7,7 +7,7 @@ struct Player {
   sf::Sprite sprite;
 
   void loadTexture() {
-    texture.loadFromFile("hero.png");
+    texture.loadFromFile("./assets/hero.png");
     sprite.setTexture(texture);
     sprite.setTextureRect(sf::IntRect(0,0,20,40));
     sprite.setScale(SCALE);

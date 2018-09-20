@@ -1,2 +1,2 @@
-game: game.cpp
-	clang++ game.cpp -o game -lsfml-system -lsfml-graphics -lsfml-window
+game: ./src/game.cpp
+	clang++ ./src/game.cpp -o ./bin/game -lsfml-system -lsfml-graphics -lsfml-window
