@@ -27,13 +27,13 @@ struct Farm {
 
   void drawInto(sf::RenderWindow* w) {
     for(Plot p : plots) {
-        plotSprite.setPosition(sf::Vector2f(p.x * TILE_WIDTH, p.y * TILE_WIDTH));
-        w->draw(plotSprite);
+      plotSprite.setPosition(sf::Vector2f(p.x * TILE_WIDTH, p.y * TILE_WIDTH));
+      w->draw(plotSprite);
     }
 
     for(Radish r : radishes) {
-        radishSprite.setPosition(sf::Vector2f(r.x * TILE_WIDTH, r.y * TILE_WIDTH));
-        w->draw(radishSprite);
+      radishSprite.setPosition(sf::Vector2f(r.x * TILE_WIDTH, r.y * TILE_WIDTH));
+      w->draw(radishSprite);
     }
   }
 
@@ -46,11 +46,22 @@ struct Farm {
     return false;
   }
 
-  void interactWithTile(int x, int y) {
-    if (!plotAtTile(x, y)) {
-      digPlot(x, y);
-    } else {
-      plantRadish(x, y);
+  void interactWithTile(int x, int y, Inventory::Item item) {
+    switch(item) {
+      case(Inventory::Nothing):
+        break;
+      case(Inventory::Seeds):
+        if (plotAtTile(x, y)) {
+          plantRadish(x, y);
+        }
+        break;
+      case(Inventory::Hoe):
+        if (!plotAtTile(x, y)) {
+          digPlot(x, y);
+        } 
+        break;
+      default:
+        break;
     }
   }
 

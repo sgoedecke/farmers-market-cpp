@@ -66,7 +66,7 @@ int main() {
           switch(event.key.code) {
             case sf::Keyboard::E:
               selectedTile.reset(player.gridX, player.gridY, player.dir);
-              farm.interactWithTile(selectedTile.x, selectedTile.y);
+              farm.interactWithTile(selectedTile.x, selectedTile.y, player.inventory.selectedItem);
               break;
             case sf::Keyboard::Escape :
               window.close();
@@ -84,7 +84,7 @@ int main() {
     window.clear();
     window.draw(world.sprite);
     farm.drawInto(&window);
-    window.draw(player.sprite);
+    player.drawInto(&window);
     if (selectedTile.isActive) {
       window.draw(selectedTile.sprite);
     }

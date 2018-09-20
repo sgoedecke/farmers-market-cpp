@@ -1,3 +1,54 @@
+struct Inventory {
+  enum Item { Nothing, Seeds, Hoe };
+
+  sf::Texture texture;
+  sf::Sprite sprite;
+  sf::Texture selectedTexture;
+  sf::Sprite selectedSprite;
+  Item selectedItem;
+
+  void loadTexture() {
+    texture.loadFromFile("./assets/inventory.png");
+    sprite.setTexture(texture);
+    sprite.setScale(SCALE);
+    selectedTexture.loadFromFile("./assets/selectedtile.png");
+    selectedSprite.setTexture(selectedTexture);
+    selectedSprite.setScale(SCALE);
+    // display inventory centered, at bottom of screen
+    sprite.setPosition(sf::Vector2f((WORLD_WIDTH / 2) - (30 * 5), WORLD_HEIGHT - (20 * 5)));
+    setSelectedTexture();
+  }
+
+  void setSelectedTexture() {
+    int pX;
+    switch(selectedItem) {
+      case(Nothing):
+        pX = 30;
+        break;
+      case(Seeds):
+        pX = 10;
+        break;
+      case(Hoe):
+        pX = -10;
+        break;
+      default:
+        break;
+    }
+    selectedSprite.setPosition(sf::Vector2f((WORLD_WIDTH / 2) - (pX * 5), WORLD_HEIGHT - (20 * 5)));
+  }
+
+  void handleKeys() {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
+      selectedItem = Nothing;
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
+      selectedItem = Seeds;
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
+      selectedItem = Hoe;
+    }
+    setSelectedTexture();
+  }
+};
+
 struct Player {
   float x, y;
   int gridX, gridY;
@@ -6,6 +57,7 @@ struct Player {
   Dir::Type dir;
   sf::Texture texture;
   sf::Sprite sprite;
+  Inventory inventory;
 
   void loadTexture() {
     gridX = 10;
@@ -17,6 +69,7 @@ struct Player {
     sprite.setTextureRect(sf::IntRect(0,0,20,40));
     sprite.setScale(SCALE);
     setPosition();
+    inventory.loadTexture();
   }
 
   void beginMove(Dir::Type d) {
@@ -89,6 +142,7 @@ struct Player {
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
       beginMove(Dir::Right);
     }
+    inventory.handleKeys();
   }
 
   void setPosition() {
@@ -129,6 +183,12 @@ struct Player {
 
     setTexture();
     setPosition();
+  }
+
+  void drawInto(sf::RenderWindow* w) {
+    w->draw(sprite);
+    w->draw(inventory.sprite);
+    w->draw(inventory.selectedSprite);
   }
 };
 
