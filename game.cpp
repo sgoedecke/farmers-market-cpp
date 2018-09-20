@@ -85,10 +85,7 @@ int main() {
         default:
           break;
       }
-
     }
-
-
 
     // draw
     window.clear();
