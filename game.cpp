@@ -5,10 +5,60 @@ using namespace std;
 
 const int WORLD_WIDTH = 2000;
 const int WORLD_HEIGHT = 1500;
+const int TILE_WIDTH = 100;
 const sf::Vector2f SCALE = sf::Vector2f(5.f, 5.f);
 int textureTick = 0;
 
 struct Dir { enum Type { Up, Down, Left, Right }; };
+
+struct SelectedTile {
+  int x, y;
+  int totalLife;
+  int tickCount;
+  bool isActive;
+
+  sf::Texture texture;
+  sf::Sprite sprite;
+
+  void loadTexture() {
+    texture.loadFromFile("selectedtile.png");
+    sprite.setTexture(texture);
+    sprite.setScale(SCALE);
+  }
+
+  void reset(int nx, int ny, Dir::Type dir) {
+    x = nx;
+    y = ny;
+    switch(dir) {
+      case Dir::Up:
+        y -= TILE_WIDTH;
+        break;
+      case Dir::Down:
+        y += TILE_WIDTH;
+        break;
+      case Dir::Left:
+        x -= TILE_WIDTH;
+        break;
+      case Dir::Right:
+        x += TILE_WIDTH;
+        break;
+    }
+    // snap to grid
+    x = (x / TILE_WIDTH) * TILE_WIDTH;
+    y = (y / TILE_WIDTH) * TILE_WIDTH;
+    totalLife = 10;
+    tickCount = 0;
+    isActive = true; 
+    sprite.setPosition(sf::Vector2f(x, y));
+  }
+
+  void tick() {
+    tickCount++;
+    if (tickCount >= totalLife) {
+      isActive = false;
+    }
+  }
+};
 
 struct Player {
   float x, y;
@@ -51,26 +101,32 @@ struct Player {
   }
 
   void move() {
+    int nx = x;
+    int ny = y;
     if (!isMoving) {
       return;
     }
     switch(dir) {
       case Dir::Up:
-        y -= speed;
+        ny -= speed;
         break;
       case Dir::Down:
-        y += speed;
+        ny += speed;
         break;
       case Dir::Left:
-        x -= speed;
+        nx -= speed;
         break;
       case Dir::Right:
-        x += speed;
+        nx += speed;
         break;
     }
-
-    setTexture();
-    sprite.setPosition(sf::Vector2f(x, y));
+    const bool isInBounds = (nx >= 0 && nx + TILE_WIDTH < WORLD_WIDTH && ny >= 0 && ny + (TILE_WIDTH * 2) < WORLD_HEIGHT);
+    if (isInBounds) {
+      setTexture();
+      x = nx;
+      y = ny;
+      sprite.setPosition(sf::Vector2f(x, y));
+    }
   }
 };
 
@@ -88,26 +144,35 @@ struct World {
 };
 
 int main() {
-  sf::Clock clock;
+  sf::Clock textureClock;
+  sf::Clock gameClock;
 
   // load textures
   Player player;
   player.speed = 8;
   player.loadTexture();
-
   World world;
   world.loadTexture();
+  SelectedTile selectedTile;
+  selectedTile.loadTexture();
 
   sf::RenderWindow window(sf::VideoMode(WORLD_WIDTH, WORLD_HEIGHT), "Grow");
   window.setFramerateLimit(60);
   while (window.isOpen()) {
 
-    if (clock.getElapsedTime().asSeconds() > 0.1f){
+    if (textureClock.getElapsedTime().asSeconds() > 0.1f){
+      // update textures
       textureTick++;
       if (textureTick >= 3) {
         textureTick = 0;
       }
-      clock.restart();
+      selectedTile.tick();
+      textureClock.restart();
+    }
+
+    if (gameClock.getElapsedTime().asSeconds() > 0.05f){
+      // update world
+      player.move();
     }
 
     sf::Event event;
@@ -132,6 +197,9 @@ int main() {
             case sf::Keyboard::D:
               player.beginMove(Dir::Right);
               break;
+            case sf::Keyboard::E:
+              selectedTile.reset(player.x, player.y, player.dir);
+              break;
             case sf::Keyboard::Escape :
               window.close();
               break;
@@ -148,13 +216,15 @@ int main() {
 
     }
 
-    // update world
-    player.move();
+
 
     // draw
     window.clear();
     window.draw(world.sprite);
     window.draw(player.sprite);
+    if (selectedTile.isActive) {
+      window.draw(selectedTile.sprite);
+    }
     window.display();
   }
   return 0;
