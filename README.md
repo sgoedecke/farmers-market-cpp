@@ -13,3 +13,10 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 ## Usage
 
 `make` should build a binary called `game`. You'll need to have SFML installed. If you're running macOS, you can probably run the binary I've checked into this repo.
+
+## Todo
+
+* Turn structs into classes with header files - make code more idiomatic
+* Add the ability to plant crops
+* Add a day/night cycle
+* Add multiple tools: watering/harvesting/clearing land
