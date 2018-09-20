@@ -29,6 +29,7 @@ struct SelectedTile {
   void reset(int nx, int ny, Dir::Type dir) {
     x = nx;
     y = ny;
+    y += TILE_WIDTH; // adjust tile to be closer to feet than head
     switch(dir) {
       case Dir::Up:
         y -= TILE_WIDTH;
