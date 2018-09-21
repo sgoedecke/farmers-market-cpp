@@ -22,13 +22,13 @@ struct Inventory {
   void setSelectedTexture() {
     int pX;
     switch(selectedItem) {
-      case(Nothing):
+      case(Hoe):
         pX = 30;
         break;
       case(Seeds):
         pX = 10;
         break;
-      case(Hoe):
+      case(Nothing):
         pX = -10;
         break;
       default:
@@ -39,11 +39,11 @@ struct Inventory {
 
   void handleKeys() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
-      selectedItem = Nothing;
+      selectedItem = Hoe;
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
       selectedItem = Seeds;
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
-      selectedItem = Hoe;
+      selectedItem = Nothing;
     }
     setSelectedTexture();
   }
