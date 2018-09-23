@@ -47,6 +47,12 @@ struct Farm {
   }
 
   void interactWithTile(int x, int y, Inventory::Item item) {
+    // validate target tile 
+    const bool isInBounds = (x > 0 && x < (WORLD_WIDTH / TILE_WIDTH) - 1 && y > 0 && y < (WORLD_HEIGHT / TILE_WIDTH) - 1);
+    if (!isInBounds) {
+      return;
+    }
+
     switch(item) {
       case(Inventory::Nothing):
         break;

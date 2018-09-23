@@ -23,4 +23,5 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 [X] Add an inventory with multiple tools: watering/harvesting/clearing land
 [ ] Add text popups to explain stuff
 [ ] Add a splash screen 
+[ ] Make it so you can't hoe the inventory
 

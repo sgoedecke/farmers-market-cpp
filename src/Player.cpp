@@ -97,7 +97,7 @@ struct Player {
         break;
     }
     // validate target tile 
-    const bool isInBounds = (ngridX >= 0 && ngridX < WORLD_WIDTH / TILE_WIDTH && ngridY >= 0 && ngridY < WORLD_HEIGHT / TILE_WIDTH);
+    const bool isInBounds = (ngridX > 0 && ngridX < (WORLD_WIDTH / TILE_WIDTH) - 1 && ngridY > 0 && ngridY < (WORLD_HEIGHT / TILE_WIDTH) - 1);
 
     // set coords of target tile and begin moving
     if (isInBounds) {
