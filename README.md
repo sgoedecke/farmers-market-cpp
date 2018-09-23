@@ -8,7 +8,7 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 
 ## Screenshot
 
-![screenshot](./screenshot.png)
+![screenshot](./grow-screenshot.png)
 
 ## Usage
 
