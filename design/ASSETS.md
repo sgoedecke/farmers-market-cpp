@@ -15,6 +15,9 @@ This is a good fit: upbeat, playful, not too energetic.
 https://opengameart.org/content/512-sound-effects-8-bit-style
 Current sound effects. A bit sci-fi but there are generic ones that I've picked out.
 
+## Fonts
+http://www.fontspace.com/codeman38/press-start-2p
+
 ## Tileset
 
 https://angrysnail.itch.io/pixel-art-graveyard-tileset
@@ -28,4 +31,12 @@ Current tileset.
 https://opengameart.org/content/lpc-farming-tilesets-magic-animations-and-ui-elements
 
 Menu tileset.
+
+https://opengameart.org/content/farming-crops-16x16
+
+Cool one for crops
+
+https://opengameart.org/content/country-side-platform-tiles
+
+Splash screen
 
