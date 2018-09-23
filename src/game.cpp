@@ -3,6 +3,9 @@
 #include <iostream>
 using namespace std;
 
+
+// constants and global variables
+//
 const int WORLD_WIDTH = 2000;
 const int WORLD_HEIGHT = 1500;
 const int TILE_WIDTH = 100;
@@ -11,14 +14,22 @@ int textureTick = 0;
 
 struct Dir { enum Type { Up, Down, Left, Right }; };
 
+#include "Audio.cpp"
+Audio gameAudio;
+
 #include "SelectedTile.cpp"
 #include "Player.cpp"
 #include "World.cpp"
 #include "Farm.cpp"
 
+
 int main() {
   sf::Clock textureClock;
   sf::Clock gameClock;
+
+  // load music
+  gameAudio.loadBuffers();
+  gameAudio.playMusic();
 
   // load textures
   Player player;
@@ -33,6 +44,8 @@ int main() {
 
   Farm farm;
   farm.loadTexture();
+
+  // initialize window and begin game loop
 
   sf::RenderWindow window(sf::VideoMode(WORLD_WIDTH, WORLD_HEIGHT), "Grow");
   window.setFramerateLimit(60);
@@ -66,7 +79,9 @@ int main() {
           switch(event.key.code) {
             case sf::Keyboard::E:
               selectedTile.reset(player.gridX, player.gridY, player.dir);
-              farm.interactWithTile(selectedTile.x, selectedTile.y, player.inventory.selectedItem);
+              farm.interactWithTile(selectedTile.x,
+                  selectedTile.y,
+                  player.inventory.selectedItem);
               break;
             case sf::Keyboard::Escape :
               window.close();

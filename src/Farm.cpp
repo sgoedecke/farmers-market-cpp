@@ -53,6 +53,8 @@ struct Farm {
       case(Inventory::Seeds):
         if (plotAtTile(x, y)) {
           plantRadish(x, y);
+        } else {
+          gameAudio.playErrorSound();
         }
         break;
       case(Inventory::Hoe):
@@ -70,6 +72,7 @@ struct Farm {
     p.x = x;
     p.y = y;
     plots.push_back(p);
+    gameAudio.playHoeSound();
   }
 
   void plantRadish(int x, int y) {
@@ -77,6 +80,7 @@ struct Farm {
     r.x = x;
     r.y = y;
     radishes.push_back(r);
+    gameAudio.playSeedSound();
   }
 };
 
