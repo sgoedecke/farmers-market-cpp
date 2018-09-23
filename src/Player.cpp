@@ -15,7 +15,7 @@ struct Inventory {
     selectedSprite.setTexture(selectedTexture);
     selectedSprite.setScale(SCALE);
     // display inventory centered, at bottom of screen
-    sprite.setPosition(sf::Vector2f((WORLD_WIDTH / 2) - (30 * 5), WORLD_HEIGHT - (20 * 5)));
+    sprite.setPosition(sf::Vector2f((WORLD_WIDTH / 2) - (30 * 5), WORLD_HEIGHT - (30 * 5)));
     setSelectedTexture();
   }
 
@@ -34,7 +34,7 @@ struct Inventory {
       default:
         break;
     }
-    selectedSprite.setPosition(sf::Vector2f((WORLD_WIDTH / 2) - (pX * 5), WORLD_HEIGHT - (20 * 5)));
+    selectedSprite.setPosition(sf::Vector2f((WORLD_WIDTH / 2) - (pX * 5), WORLD_HEIGHT - (30 * 5)));
   }
 
   void handleKeys() {

@@ -25,3 +25,7 @@ https://opengameart.org/content/autumn-tileset-for-rpgs
 
 Current tileset.
 
+https://opengameart.org/content/lpc-farming-tilesets-magic-animations-and-ui-elements
+
+Menu tileset.
+

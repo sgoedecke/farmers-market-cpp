@@ -16,8 +16,11 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 
 ## Todo
 
-* Turn structs into classes with header files - make code more idiomatic
-* Add the ability to plant crops
-* Add a day/night cycle
-* Add an inventory with multiple tools: watering/harvesting/clearing land
-* Add text popups to explain stuff
+[ ] Turn structs into classes with header files - make code more idiomatic
+[X] Add the ability to plant crops
+[X] Add music and sound effects 
+[ ] Add a day/night cycle
+[X] Add an inventory with multiple tools: watering/harvesting/clearing land
+[ ] Add text popups to explain stuff
+[ ] Add a splash screen 
+

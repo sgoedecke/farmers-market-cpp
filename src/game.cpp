@@ -3,9 +3,7 @@
 #include <iostream>
 using namespace std;
 
-
 // constants and global variables
-//
 const int WORLD_WIDTH = 2000;
 const int WORLD_HEIGHT = 1500;
 const int TILE_WIDTH = 100;
@@ -51,8 +49,8 @@ int main() {
   window.setFramerateLimit(60);
   while (window.isOpen()) {
 
+    // update textures
     if (textureClock.getElapsedTime().asSeconds() > 0.1f){
-      // update textures
       textureTick++;
       if (textureTick >= 3) {
         textureTick = 0;
@@ -61,15 +59,14 @@ int main() {
       textureClock.restart();
     }
 
+    // update world
     if (gameClock.getElapsedTime().asSeconds() > 0.05f){
-      // update world
       player.move();
     }
 
+    // handle events/keys
     sf::Event event;
     while (window.pollEvent(event)) {
-
-      // handle events/keys
       switch (event.type) {
         case sf::Event::Closed:
           window.close();
