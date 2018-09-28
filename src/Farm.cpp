@@ -16,6 +16,11 @@ struct Plot {
   bool watered;
 };
 
+struct Rock {
+  int x;
+  int y;
+};
+
 struct HarvestedCrops {
   int radishes;
 };
@@ -31,8 +36,13 @@ struct Farm {
   sf::Texture plotWateredTexture;
   sf::Sprite plotSprite;
   sf::Sprite plotWateredSprite;
+
+  sf::Sprite rockSprite;
+  sf::Texture rockTexture;
+
   vector<Radish> radishes;
   vector<Plot> plots;
+  vector<Rock> rocks;
 
   HarvestedCrops harvestedCrops;
 
@@ -49,6 +59,10 @@ struct Farm {
     radishSprite1.setScale(SCALE);
     radishSprite2.setScale(SCALE);
     radishSprite3.setScale(SCALE);
+
+    rockTexture.loadFromFile("./assets/rock.png");
+    rockSprite.setTexture(rockTexture);
+    rockSprite.setScale(SCALE);
 
     plotTexture.loadFromFile("./assets/plot.png");
     plotSprite.setTexture(plotTexture);
@@ -84,6 +98,32 @@ struct Farm {
       radishSprite.setPosition(sf::Vector2f(r.x * TILE_WIDTH + 10, r.y * TILE_WIDTH));
       w->draw(radishSprite);
     }
+
+    for(Rock r: rocks) {
+      rockSprite.setPosition(sf::Vector2f(r.x * TILE_WIDTH, r.y * TILE_WIDTH));
+      w->draw(rockSprite);
+    }
+  }
+
+  bool isPassable(int x, int y) {
+    if (rockAtTile(x, y)) {
+      return false;
+    }
+    for(Radish r : radishes) {
+      if (r.x == x && r.y == y && r.status == 2) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool rockAtTile(int x, int y) {
+    for(Rock r : rocks) {
+      if (r.x == x && r.y == y) {
+        return true;
+      }
+    }
+    return false;
   }
 
   bool plotAtTile(int x, int y) {
@@ -123,7 +163,9 @@ struct Farm {
         }
         break;
       case(Inventory::Hoe):
-        if (!plotAtTile(x, y)) {
+        if (rockAtTile(x, y)) {
+          removeRock(x, y);
+        } else if (!plotAtTile(x, y)) {
           digPlot(x, y);
         } 
         break;
@@ -138,6 +180,14 @@ struct Farm {
         gameAlert.setMessage("Got a radish!");
         harvestedCrops.radishes++;
         radishes.erase(radishes.begin() + i);
+      }
+    }
+  }
+
+  void removeRock(int x, int y) {
+    for(int i = 0; i < rocks.size(); i++) {
+      if (rocks[i].x == x && rocks[i].y == y) {
+        rocks.erase(rocks.begin() + i);
       }
     }
   }
@@ -181,6 +231,13 @@ struct Farm {
     r.status = 0;
     radishes.push_back(r);
     gameAudio.playSeedSound();
+  }
+
+  void spawnRock(int x, int y) {
+    Rock r;
+    r.x = x;
+    r.y = y;
+    rocks.push_back(r);
   }
 };
 

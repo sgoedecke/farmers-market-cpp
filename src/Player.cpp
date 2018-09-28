@@ -49,9 +49,10 @@ struct Player {
     }
     // validate target tile 
     const bool isInBounds = (ngridX > 0 && ngridX < (WORLD_WIDTH / TILE_WIDTH) - 1 && ngridY > 0 && ngridY < (WORLD_HEIGHT / TILE_WIDTH) - 1);
+    const bool isPassable = farm.isPassable(ngridX, ngridY);
 
     // set coords of target tile and begin moving
-    if (isInBounds) {
+    if (isInBounds && isPassable) {
       dir = d;
       isMoving = true;
       gridX = ngridX;

@@ -19,11 +19,13 @@ Audio gameAudio;
 #include "Alert.cpp"
 Alert gameAlert;
 
-#include "SelectedTile.cpp"
 #include "Inventory.cpp"
+#include "Farm.cpp"
+Farm farm;
+
+#include "SelectedTile.cpp"
 #include "Player.cpp"
 #include "World.cpp"
-#include "Farm.cpp"
 #include "SplashScreen.cpp"
 
 int main() {
@@ -45,8 +47,8 @@ int main() {
   SelectedTile selectedTile;
   selectedTile.loadTexture();
 
-  Farm farm;
   farm.loadTexture();
+  farm.spawnRock(5, 5);
 
   gameAlert.loadTexture();
 
