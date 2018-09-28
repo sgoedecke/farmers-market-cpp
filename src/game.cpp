@@ -20,6 +20,9 @@ Audio gameAudio;
 Alert gameAlert;
 
 #include "Inventory.cpp"
+#include "Animations.cpp"
+Animations animations;
+
 #include "Farm.cpp"
 Farm farm;
 
@@ -52,6 +55,8 @@ int main() {
 
   gameAlert.loadTexture();
 
+  animations.loadTexture();
+
   SplashScreen splashScreen;
   splashScreen.loadTexture();
 
@@ -72,6 +77,7 @@ int main() {
       }
       selectedTile.tick();
       gameAlert.tick();
+      animations.tick();
       textureClock.restart();
     }
 
@@ -122,6 +128,7 @@ int main() {
     if (gameState == OnFarm) {
       window.draw(world.sprite);
       farm.drawInto(&window);
+      animations.drawInto(&window);
       player.drawInto(&window);
       gameAlert.drawInto(&window);
       if (selectedTile.isActive) {

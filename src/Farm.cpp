@@ -190,6 +190,7 @@ struct Farm {
         rocks.erase(rocks.begin() + i);
       }
     }
+    animations.spawnAnimation(x, y, Animation::Type::RemoveRock);
   }
 
   void fertilizeTile(int x, int y) {
@@ -206,6 +207,7 @@ struct Farm {
         plots[i].watered = true;
       }
     }
+    animations.spawnAnimation(x, y, Animation::Type::Water);
   }
 
   void digPlot(int x, int y) {
@@ -215,6 +217,7 @@ struct Farm {
     p.watered = false;
     plots.push_back(p);
     gameAudio.playHoeSound();
+    animations.spawnAnimation(x, y, Animation::Type::Dig);
   }
 
   void plantRadish(int x, int y) {
