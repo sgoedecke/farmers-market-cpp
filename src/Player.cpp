@@ -1,5 +1,5 @@
 struct Inventory {
-  enum Item { Nothing, Seeds, Hoe };
+  enum Item { Nothing, WateringCan, Seeds, Hoe };
 
   sf::Texture texture;
   sf::Sprite sprite;
@@ -22,13 +22,16 @@ struct Inventory {
   void setSelectedTexture() {
     int pX;
     switch(selectedItem) {
+      case(Nothing):
+        pX = -999;
+        break;
       case(Hoe):
         pX = 30;
         break;
       case(Seeds):
         pX = 10;
         break;
-      case(Nothing):
+      case(WateringCan):
         pX = -10;
         break;
       default:
@@ -43,6 +46,8 @@ struct Inventory {
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
       selectedItem = Seeds;
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
+      selectedItem = WateringCan;
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0)) {
       selectedItem = Nothing;
     }
     setSelectedTexture();
@@ -64,10 +69,12 @@ struct Player {
     gridY = 10;
     x = gridX * TILE_WIDTH;
     y = gridY * TILE_WIDTH;
+    dir = Dir::Up;
     texture.loadFromFile("./assets/hero.png");
     sprite.setTexture(texture);
     sprite.setTextureRect(sf::IntRect(0,0,20,40));
     sprite.setScale(SCALE);
+    setTexture();
     setPosition();
     inventory.loadTexture();
   }

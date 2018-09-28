@@ -24,6 +24,11 @@ struct Audio {
     sound.play();
   }
 
+  void playWaterSound() {
+    sound.setBuffer(seedBuffer);
+    sound.play();
+  }
+
   void playErrorSound() {
     sound.setBuffer(errorBuffer);
     sound.play();
