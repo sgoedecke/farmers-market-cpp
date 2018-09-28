@@ -18,12 +18,14 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 
 - [ ] Turn structs into classes with header files - make code more idiomatic
 - [X] Add the ability to plant crops
-- [ ] Proper crop-planting sprites which mature into different crops
-- [ ] Harvest crops and store them in the inventory
+- [X] Proper crop-planting sprites which mature into different crops
+- [X] Harvest crops and store them in the inventory
 - [X] Add music and sound effects 
 - [ ] Add a day/night cycle
 - [X] Add an inventory with multiple tools: watering/harvesting/clearing land
-- [ ] Add text popups to explain stuff
+- [X] Add text popups to explain stuff
 - [X] Add a splash screen 
-- [ ] Make it so you can't hoe the inventory
+- [X] Make it so you can't hoe the inventory
+- [ ] Add animations
+- [ ] Limit inventory usage
 
