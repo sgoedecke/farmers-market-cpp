@@ -20,6 +20,7 @@ Audio gameAudio;
 Alert gameAlert;
 
 #include "SelectedTile.cpp"
+#include "Inventory.cpp"
 #include "Player.cpp"
 #include "World.cpp"
 #include "Farm.cpp"

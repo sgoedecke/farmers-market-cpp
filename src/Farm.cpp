@@ -3,7 +3,7 @@ struct Radish {
   int y;
   int status;
 
-  void water() {
+  void grow() {
     if (status < 2) {
       status++;
     }
@@ -13,6 +13,7 @@ struct Radish {
 struct Plot {
   int x;
   int y;
+  bool watered;
 };
 
 struct HarvestedCrops {
@@ -27,7 +28,9 @@ struct Farm {
   sf::Sprite radishSprite3;
 
   sf::Texture plotTexture;
+  sf::Texture plotWateredTexture;
   sf::Sprite plotSprite;
+  sf::Sprite plotWateredSprite;
   vector<Radish> radishes;
   vector<Plot> plots;
 
@@ -49,13 +52,22 @@ struct Farm {
 
     plotTexture.loadFromFile("./assets/plot.png");
     plotSprite.setTexture(plotTexture);
+
+    plotWateredTexture.loadFromFile("./assets/plot-watered.png");
+    plotWateredSprite.setTexture(plotWateredTexture);
     plotSprite.setScale(SCALE);
+    plotWateredSprite.setScale(SCALE);
   }
 
   void drawInto(sf::RenderWindow* w) {
     for(Plot p : plots) {
-      plotSprite.setPosition(sf::Vector2f(p.x * TILE_WIDTH, p.y * TILE_WIDTH));
-      w->draw(plotSprite);
+      if (p.watered) {
+        plotWateredSprite.setPosition(sf::Vector2f(p.x * TILE_WIDTH, p.y * TILE_WIDTH));
+        w->draw(plotWateredSprite);
+      } else {
+        plotSprite.setPosition(sf::Vector2f(p.x * TILE_WIDTH, p.y * TILE_WIDTH));
+        w->draw(plotSprite);
+     }
     }
 
     for(Radish r : radishes) {
@@ -98,6 +110,10 @@ struct Farm {
         waterTile(x, y);
         gameAudio.playWaterSound();
         break;
+      case(Inventory::Fertilizer):
+        fertilizeTile(x, y);
+        gameAudio.playWaterSound();
+        break;
       case(Inventory::Seeds):
         if (plotAtTile(x, y)) {
           plantRadish(x, y);
@@ -118,8 +134,7 @@ struct Farm {
 
   void harvestTile(int x, int y) {
     for(int i = 0; i < radishes.size(); i++) {
-      Radish r = radishes[i];
-      if (r.status == 2 && r.x == x && r.y == y) {
+      if (radishes[i].status == 2 && radishes[i].x == x && radishes[i].y == y) {
         gameAlert.setMessage("Got a radish!");
         harvestedCrops.radishes++;
         radishes.erase(radishes.begin() + i);
@@ -127,13 +142,19 @@ struct Farm {
     }
   }
 
-  void waterTile(int x, int y) {
+  void fertilizeTile(int x, int y) {
     for(int i = 0; i < radishes.size(); i++) {
-      Radish r = radishes[i];
-      if (r.x == x && r.y == y) {
-        r.water();
+      if (radishes[i].x == x && radishes[i].y == y) {
+        radishes[i].grow();
       }
-      radishes[i] = r;
+    }
+  }
+
+  void waterTile(int x, int y) {
+    for(int i = 0; i < plots.size(); i++) {
+      if(plots[i].x == x && plots[i].y == y) {
+        plots[i].watered = true;
+      }
     }
   }
 
@@ -141,13 +162,13 @@ struct Farm {
     Plot p;
     p.x = x;
     p.y = y;
+    p.watered = false;
     plots.push_back(p);
     gameAudio.playHoeSound();
   }
 
   void plantRadish(int x, int y) {
-    for(int i = 0; i < radishes.size(); i++) {
-      Radish r = radishes[i];
+    for(Radish r : radishes) {
       if (r.x == x && r.y == y) {
         return; // since there's already a radish here
       }
