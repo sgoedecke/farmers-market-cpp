@@ -16,6 +16,9 @@ enum GameState { OnSplashScreen, OnFarm };
 #include "Audio.cpp"
 Audio gameAudio;
 
+#include "Alert.cpp"
+Alert gameAlert;
+
 #include "SelectedTile.cpp"
 #include "Player.cpp"
 #include "World.cpp"
@@ -44,6 +47,8 @@ int main() {
   Farm farm;
   farm.loadTexture();
 
+  gameAlert.loadTexture();
+
   SplashScreen splashScreen;
   splashScreen.loadTexture();
 
@@ -63,6 +68,7 @@ int main() {
         textureTick = 0;
       }
       selectedTile.tick();
+      gameAlert.tick();
       textureClock.restart();
     }
 
@@ -114,6 +120,7 @@ int main() {
       window.draw(world.sprite);
       farm.drawInto(&window);
       player.drawInto(&window);
+      gameAlert.drawInto(&window);
       if (selectedTile.isActive) {
         window.draw(selectedTile.sprite);
       }

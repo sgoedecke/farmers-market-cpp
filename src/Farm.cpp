@@ -15,6 +15,10 @@ struct Plot {
   int y;
 };
 
+struct HarvestedCrops {
+  int radishes;
+};
+
 struct Farm {
   sf::Texture cropsTexture;
 
@@ -26,6 +30,8 @@ struct Farm {
   sf::Sprite plotSprite;
   vector<Radish> radishes;
   vector<Plot> plots;
+
+  HarvestedCrops harvestedCrops;
 
   void loadTexture() {
     cropsTexture.loadFromFile("./assets/Crop_Spritesheet.png");
@@ -86,6 +92,7 @@ struct Farm {
 
     switch(item) {
       case(Inventory::Nothing):
+        harvestTile(x, y);
         break;
       case(Inventory::WateringCan):
         waterTile(x, y);
@@ -95,6 +102,7 @@ struct Farm {
         if (plotAtTile(x, y)) {
           plantRadish(x, y);
         } else {
+          gameAlert.setMessage("Use your hoe!");
           gameAudio.playErrorSound();
         }
         break;
@@ -105,6 +113,17 @@ struct Farm {
         break;
       default:
         break;
+    }
+  }
+
+  void harvestTile(int x, int y) {
+    for(int i = 0; i < radishes.size(); i++) {
+      Radish r = radishes[i];
+      if (r.status == 2 && r.x == x && r.y == y) {
+        gameAlert.setMessage("Got a radish!");
+        harvestedCrops.radishes++;
+        radishes.erase(radishes.begin() + i);
+      }
     }
   }
 
@@ -127,6 +146,14 @@ struct Farm {
   }
 
   void plantRadish(int x, int y) {
+    for(int i = 0; i < radishes.size(); i++) {
+      Radish r = radishes[i];
+      if (r.x == x && r.y == y) {
+        return; // since there's already a radish here
+      }
+    }
+
+    // create a new radish
     Radish r;
     r.x = x;
     r.y = y;
