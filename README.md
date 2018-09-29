@@ -30,4 +30,6 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 - [X] Limit inventory usage
 - [X] Add other types of crop that can grow from seeds
 - [X] Display harvested crops
+- [ ] Handle ENTER on splash screen not skipping menu
+- [ ] Stop accidentally advancing the day by running home
 

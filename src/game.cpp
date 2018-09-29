@@ -12,13 +12,18 @@ const sf::Vector2f SCALE = sf::Vector2f(5.f, 5.f);
 int textureTick = 0;
 
 struct Dir { enum Type { Up, Down, Left, Right }; };
-enum GameState { OnSplashScreen, OnFarm };
+enum GameState { OnSplashScreen, OnFarm, OnMenu };
+
+GameState gameState;
 
 #include "Audio.cpp"
 Audio gameAudio;
 
 #include "Alert.cpp"
 Alert gameAlert;
+
+#include "Menu.cpp"
+Menu menu;
 
 #include "Inventory.cpp"
 #include "Animations.cpp"
@@ -31,6 +36,7 @@ Farm farm;
 #include "Player.cpp"
 #include "World.cpp"
 #include "SplashScreen.cpp"
+
 
 int main() {
   srand(time(NULL)); // seed rng
@@ -68,7 +74,8 @@ int main() {
   SplashScreen splashScreen;
   splashScreen.loadTexture();
 
-  GameState gameState;
+  menu.loadTexture();
+
   gameState = OnSplashScreen;
 
   // initialize window and begin game loop
@@ -104,28 +111,33 @@ int main() {
           window.close();
           break;
         case sf::Event::KeyPressed:
+		  if (event.key.code == sf::Keyboard::Escape) {
+			window.close();
+		  }
+
           // if any key is pressed on the splash screen, start the game
           if (gameState == OnSplashScreen) {
-            gameState = OnFarm;
+            gameState = OnMenu;
+			menu.displayIntroMenu();
           }
 
-          if (gameState == OnFarm) {
-            player.handleKeys();
-            switch(event.key.code) {
-              case sf::Keyboard::E:
-                selectedTile.reset(player.gridX, player.gridY, player.dir);
-                farm.interactWithTile(selectedTile.x,
-                    selectedTile.y,
-                    player.inventory.selectedItem);
-                break;
-              case sf::Keyboard::Escape :
-                window.close();
-                break;
-              default:
-                break;
-            }
-          }
-          break;
+		  if (gameState == OnMenu) {
+			bool stillOnMenu = menu.handleKeysWithReturn(); 
+			if (!stillOnMenu) {
+			  gameState = OnFarm;
+			}
+		  }
+
+		  if (gameState == OnFarm) {
+			player.handleKeys();
+			if (event.key.code == sf::Keyboard::E) {
+			  selectedTile.reset(player.gridX, player.gridY, player.dir);
+			  farm.interactWithTile(selectedTile.x,
+				  selectedTile.y,
+				  player.inventory.selectedItem);
+			}
+		  }
+		  break;
         default:
           break;
       }
@@ -145,6 +157,9 @@ int main() {
     }
     if (gameState == OnSplashScreen) {
       splashScreen.drawInto(&window);
+    }
+    if (gameState == OnMenu) {
+      menu.drawInto(&window);
     }
     window.display();
   }

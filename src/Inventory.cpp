@@ -120,6 +120,7 @@ struct Inventory {
 		break;
 	  case Thursday:
         weekday = Friday;
+        menu.displayMarketMenu();
 		break;
 	  case Friday:
         weekday = Monday;
