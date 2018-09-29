@@ -60,14 +60,13 @@ struct Player {
     // validate target tile 
     const bool isInBounds = (ngridX > 0 && ngridX < (WORLD_WIDTH / TILE_WIDTH) - 1 && ngridY > 0 && ngridY < (WORLD_HEIGHT / TILE_WIDTH) - 1);
     const bool isPassable = farm.isPassable(ngridX, ngridY);
-
     // set coords of target tile and begin moving
     if (isInBounds && isPassable && !isInHome(ngridX, ngridY)) {
       dir = d;
       isMoving = true;
       gridX = ngridX;
       gridY = ngridY;
-    } else if (isInHome(ngridX, ngridY)) {
+    } else if (ngridX == WORLD_WIDTH/TILE_WIDTH - 2 && ngridY == 3) { // if trying to enter the home door
       gameAlert.setMessage("Sunrise!");
       farm.handleNewDay();
       animations.spawnAnimation(0, 0, Animation::Type::Sunrise);
