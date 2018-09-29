@@ -67,8 +67,8 @@ struct Player {
       gridX = ngridX;
       gridY = ngridY;
     } else if (ngridX == WORLD_WIDTH/TILE_WIDTH - 2 && ngridY == 3) { // if trying to enter the home door
-      gameAlert.setMessage("Sunrise!");
       farm.handleNewDay();
+	  inventory.handleNewDay();
       animations.spawnAnimation(0, 0, Animation::Type::Sunrise);
 	} else {
 	  // even if you can't move, you should be able to turn
