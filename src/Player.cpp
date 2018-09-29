@@ -24,10 +24,10 @@ struct Player {
   }
 
   bool isInHome(int x, int y) {
-     if (x < (WORLD_WIDTH / TILE_WIDTH) - 4) {
+     if (x < (WORLD_WIDTH / TILE_WIDTH) - 3) {
 	   return false;
 	 } 
-     if (y > 2) {
+     if (y > 3) {
 	   return false;
 	 } 
 	 return true;
