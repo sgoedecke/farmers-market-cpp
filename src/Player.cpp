@@ -70,6 +70,11 @@ struct Player {
       gameAlert.setMessage("Sunrise!");
       farm.handleNewDay();
       animations.spawnAnimation(0, 0, Animation::Type::Sunrise);
+	} else {
+	  // even if you can't move, you should be able to turn
+	  dir = d;
+	  setTexture();
+	  isMoving = false;
 	}
   }
 
