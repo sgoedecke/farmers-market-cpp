@@ -43,12 +43,14 @@ struct Inventory {
   HarvestedCrops harvestedCrops;
   int numSeeds;
   int numFertilizer;
+  int money;
   Weekday weekday;
 
   void loadTexture() {
 	weekday = Monday;
     numSeeds = 10;
     numFertilizer = 5;
+    money = 0;
 
     font.loadFromFile("./assets/PressStart2P.ttf");
     inventoryText.setFillColor(sf::Color::Black);

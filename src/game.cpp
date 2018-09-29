@@ -12,7 +12,7 @@ const sf::Vector2f SCALE = sf::Vector2f(5.f, 5.f);
 int textureTick = 0;
 
 struct Dir { enum Type { Up, Down, Left, Right }; };
-enum GameState { OnSplashScreen, OnFarm, OnMenu };
+enum GameState { OnSplashScreen, OnFarm, OnMenu, OnMarket };
 
 GameState gameState;
 
@@ -36,6 +36,7 @@ Farm farm;
 #include "Player.cpp"
 #include "World.cpp"
 #include "SplashScreen.cpp"
+#include "Market.cpp"
 
 
 int main() {
@@ -74,9 +75,13 @@ int main() {
   SplashScreen splashScreen;
   splashScreen.loadTexture();
 
+  Market market;
+  market.loadTexture();
+
   menu.loadTexture();
 
   gameState = OnSplashScreen;
+  gameState = OnMarket;
 
   // initialize window and begin game loop
 
@@ -137,6 +142,10 @@ int main() {
 				  player.inventory.selectedItem);
 			}
 		  }
+
+          if (gameState == OnMarket) {
+            // handle market controls
+          }
 		  break;
         default:
           break;
@@ -155,12 +164,19 @@ int main() {
         window.draw(selectedTile.sprite);
       }
     }
+
     if (gameState == OnSplashScreen) {
       splashScreen.drawInto(&window);
     }
+
     if (gameState == OnMenu) {
       menu.drawInto(&window);
     }
+
+    if (gameState == OnMarket) {
+      market.drawInto(&window);
+    }
+
     window.display();
   }
   return 0;

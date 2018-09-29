@@ -10,6 +10,9 @@ https://www.reddit.com/r/gamedev/comments/9afex0/i_make_orchestral_electronic_mu
 
 This is a good fit: upbeat, playful, not too energetic.
 
+https://opengameart.org/content/rpg-simple-shop-16-bit
+For shop music
+
 ## Sound effects
 
 https://opengameart.org/content/512-sound-effects-8-bit-style
