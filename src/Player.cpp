@@ -23,6 +23,16 @@ struct Player {
     inventory.loadTexture();
   }
 
+  bool isInHome(int x, int y) {
+     if (x < (WORLD_WIDTH / TILE_WIDTH) - 4) {
+	   return false;
+	 } 
+     if (y > 2) {
+	   return false;
+	 } 
+	 return true;
+  }
+
   void beginMove(Dir::Type d) {
     // if we're currently moving, wait for it to finish
     // might have to rethink this if it makes moving janky
@@ -52,12 +62,16 @@ struct Player {
     const bool isPassable = farm.isPassable(ngridX, ngridY);
 
     // set coords of target tile and begin moving
-    if (isInBounds && isPassable) {
+    if (isInBounds && isPassable && !isInHome(ngridX, ngridY)) {
       dir = d;
       isMoving = true;
       gridX = ngridX;
       gridY = ngridY;
-    }
+    } else if (isInHome(ngridX, ngridY)) {
+      gameAlert.setMessage("Sunrise!");
+      farm.handleNewDay();
+      animations.spawnAnimation(0, 0, Animation::Type::Sunrise);
+	}
   }
 
   void setTexture() {

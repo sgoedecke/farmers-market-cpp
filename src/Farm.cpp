@@ -249,5 +249,23 @@ struct Farm {
     r.y = y;
     rocks.push_back(r);
   }
+
+  // redundant inner loop, I know, but this will be low-n & not run often
+  void handleNewDay() {
+    int x;
+	int y;
+	for(int i = 0; i < plots.size(); i++) {
+	  if (plots[i].watered) {
+		plots[i].watered = false;
+        x = plots[i].x;
+		y = plots[i].y;
+		for(int i = 0; i < radishes.size(); i++) {
+		  if (radishes[i].x == x && radishes[i].y == y && radishes[i].status < 2) {
+			radishes[i].status++;
+		  }
+		}
+	  }
+    }
+  }
 };
 

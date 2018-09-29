@@ -1,5 +1,5 @@
 struct Animation {
-  enum Type { Water, Dig, RemoveRock };
+  enum Type { Water, Dig, RemoveRock, Sunrise };
 
   int tickCount;
   int x;
@@ -9,7 +9,11 @@ struct Animation {
 };
 
 bool animationHasExpired(Animation a) {
-  return (a.tickCount > 2);
+  if (a.type == Animation::Sunrise) {
+	return (a.tickCount > 5);
+  } else {
+	return (a.tickCount > 2);
+  }
 }
 
 struct Animations {
@@ -19,6 +23,8 @@ struct Animations {
   sf::Sprite digAnimationSprite;
   sf::Texture removeRockAnimationTexture;
   sf::Sprite removeRockAnimationSprite;
+  sf::Texture sunriseTexture;
+  sf::Sprite sunriseSprite;
   vector<Animation> animations;
 
   void loadTexture() {
@@ -33,6 +39,12 @@ struct Animations {
     removeRockAnimationTexture.loadFromFile("./assets/remove-rock-animation.png");
     removeRockAnimationSprite.setTexture(removeRockAnimationTexture);
     removeRockAnimationSprite.setScale(SCALE);
+
+    sf::Image sunriseImage;
+    sunriseImage.create(WORLD_WIDTH, WORLD_HEIGHT, sf::Color::Black);
+    sunriseTexture.loadFromImage(sunriseImage);
+    sunriseSprite.setTexture(sunriseTexture);
+	sunriseSprite.setColor(sf::Color(0,0,0,0));
   }
 
   void spawnAnimation(int x, int y, Animation::Type type) {
@@ -69,16 +81,25 @@ struct Animations {
         case(Animation::Type::RemoveRock):
           sprite = &removeRockAnimationSprite;
           break;
-      }
-      if (a.tickCount == 0) {
-        sprite->setTextureRect(sf::IntRect(0,0,20,20));
-      } else if (a.tickCount == 1) {
-        sprite->setTextureRect(sf::IntRect(20,0,20,20));
-      } else {
-        sprite->setTextureRect(sf::IntRect(40,0,20,20));
+        case(Animation::Type::Sunrise):
+          sprite = &sunriseSprite;
+          break;
       }
 
-      sprite->setPosition(sf::Vector2f(a.x * TILE_WIDTH, a.y * TILE_WIDTH));
+	  if (a.type != Animation::Type::Sunrise) {
+		if (a.tickCount == 0) {
+		  sprite->setTextureRect(sf::IntRect(0,0,20,20));
+		} else if (a.tickCount == 1) {
+		  sprite->setTextureRect(sf::IntRect(20,0,20,20));
+		} else {
+		  sprite->setTextureRect(sf::IntRect(40,0,20,20));
+		}
+	  } else {
+		// fade out
+		sprite->setColor(sf::Color(0,0,0,200-(a.tickCount * 40)));
+	  }
+
+	  sprite->setPosition(sf::Vector2f(a.x * TILE_WIDTH, a.y * TILE_WIDTH));
       w->draw(*sprite);
     }
   }

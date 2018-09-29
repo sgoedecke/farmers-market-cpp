@@ -8,5 +8,6 @@ struct World {
     sprite.setTextureRect(sf::IntRect(0,0,WORLD_WIDTH,WORLD_HEIGHT));
     sprite.setScale(sf::Vector2f(5.f, 5.f));
   }
+
 };
 
