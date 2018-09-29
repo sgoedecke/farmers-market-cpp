@@ -139,8 +139,7 @@ struct Player {
 
   void drawInto(sf::RenderWindow* w) {
     w->draw(sprite);
-    w->draw(inventory.sprite);
-    w->draw(inventory.selectedSprite);
+    inventory.drawInto(w);
   }
 };
 

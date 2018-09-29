@@ -2,12 +2,6 @@ struct Radish {
   int x;
   int y;
   int status;
-
-  void grow() {
-    if (status < 2) {
-      status++;
-    }
-  }
 };
 
 struct Plot {
@@ -45,6 +39,7 @@ struct Farm {
   vector<Rock> rocks;
 
   HarvestedCrops harvestedCrops;
+  Inventory* inventoryPtr;
 
   void loadTexture() {
     cropsTexture.loadFromFile("./assets/Crop_Spritesheet.png");
@@ -194,9 +189,15 @@ struct Farm {
   }
 
   void fertilizeTile(int x, int y) {
+	if(inventoryPtr->numFertilizer < 1) {
+      gameAlert.setMessage("No fertilizer!");
+	  return;
+	}
+
     for(int i = 0; i < radishes.size(); i++) {
-      if (radishes[i].x == x && radishes[i].y == y) {
-        radishes[i].grow();
+      if (radishes[i].x == x && radishes[i].y == y && radishes[i].status < 2) {
+        radishes[i].status++;
+		inventoryPtr->numFertilizer--;
       }
     }
   }
@@ -221,6 +222,11 @@ struct Farm {
   }
 
   void plantRadish(int x, int y) {
+	if(inventoryPtr->numSeeds < 1) {
+      gameAlert.setMessage("No seeds!");
+	  return;
+	}
+
     for(Radish r : radishes) {
       if (r.x == x && r.y == y) {
         return; // since there's already a radish here
@@ -234,6 +240,7 @@ struct Farm {
     r.status = 0;
     radishes.push_back(r);
     gameAudio.playSeedSound();
+	inventoryPtr->numSeeds--;
   }
 
   void spawnRock(int x, int y) {

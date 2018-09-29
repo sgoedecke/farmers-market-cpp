@@ -52,6 +52,11 @@ int main() {
 
   farm.loadTexture();
   farm.spawnRock(5, 5);
+  farm.spawnRock(6, 5);
+  farm.spawnRock(7, 5);
+  farm.spawnRock(6, 3);
+  farm.spawnRock(8, 9);
+  farm.inventoryPtr = &player.inventory;
 
   gameAlert.loadTexture();
 

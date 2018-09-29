@@ -5,9 +5,20 @@ struct Inventory {
   sf::Sprite sprite;
   sf::Texture selectedTexture;
   sf::Sprite selectedSprite;
+  sf::Text numItems;
+  sf::Font font;
   Item selectedItem;
+  int numSeeds;
+  int numFertilizer;
 
   void loadTexture() {
+    numSeeds = 10;
+    numFertilizer = 5;
+
+    font.loadFromFile("./assets/PressStart2P.ttf");
+    numItems.setFillColor(sf::Color::Black);
+    numItems.setFont(font);
+
     texture.loadFromFile("./assets/inventory-banner.png");
     sprite.setTexture(texture);
     sprite.setScale(SCALE);
@@ -18,6 +29,21 @@ struct Inventory {
     sprite.setPosition(sf::Vector2f((WORLD_WIDTH / 2) - (36 * 5), WORLD_HEIGHT - (36 * 5)));
     setSelectedTexture();
   }
+
+  void drawInto(sf::RenderWindow* w) {
+    w->draw(sprite);
+    w->draw(selectedSprite);
+    // draw fertilizer count
+    numItems.setString(std::to_string(numFertilizer));
+    numItems.setPosition(sf::Vector2f((WORLD_WIDTH / 2) + (40 * 5), WORLD_HEIGHT - (8 * 5)));
+	w->draw(numItems);
+
+	// seed count
+    numItems.setString(std::to_string(numSeeds));
+    numItems.setPosition(sf::Vector2f((WORLD_WIDTH / 2) - (5 * 5), WORLD_HEIGHT - (8 * 5)));
+	w->draw(numItems);
+  }
+
 
   void setSelectedTexture() {
     int pX;
