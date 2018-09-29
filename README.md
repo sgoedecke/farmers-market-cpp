@@ -21,11 +21,12 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 - [X] Proper crop-planting sprites which mature into different crops
 - [X] Harvest crops and store them in the inventory
 - [X] Add music and sound effects 
-- [ ] Add a day/night cycle
+- [X] Add a day/night cycle
 - [X] Add an inventory with multiple tools: watering/harvesting/clearing land
 - [X] Add text popups to explain stuff
 - [X] Add a splash screen 
 - [X] Make it so you can't hoe the inventory
-- [ ] Add animations
-- [ ] Limit inventory usage
+- [X] Add animations
+- [X] Limit inventory usage
+- [ ] Add other types of crop that can grow from seeds
 

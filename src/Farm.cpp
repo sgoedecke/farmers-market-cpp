@@ -1,7 +1,9 @@
-struct Radish {
+struct Crop {
+  enum Type { Radish, Eggplant, Corn };
   int x;
   int y;
   int status;
+  Type type;
 };
 
 struct Plot {
@@ -17,14 +19,14 @@ struct Rock {
 
 struct HarvestedCrops {
   int radishes;
+  int eggplant;
+  int corn;
 };
 
 struct Farm {
   sf::Texture cropsTexture;
 
-  sf::Sprite radishSprite1;
-  sf::Sprite radishSprite2;
-  sf::Sprite radishSprite3;
+  sf::Sprite cropSprite;
 
   sf::Texture plotTexture;
   sf::Texture plotWateredTexture;
@@ -34,7 +36,7 @@ struct Farm {
   sf::Sprite rockSprite;
   sf::Texture rockTexture;
 
-  vector<Radish> radishes;
+  vector<Crop> crops;
   vector<Plot> plots;
   vector<Rock> rocks;
 
@@ -43,17 +45,9 @@ struct Farm {
 
   void loadTexture() {
     cropsTexture.loadFromFile("./assets/Crop_Spritesheet.png");
-    radishSprite1.setTexture(cropsTexture);
-    radishSprite2.setTexture(cropsTexture);
-    radishSprite3.setTexture(cropsTexture);
 
-    radishSprite1.setTextureRect(sf::IntRect(32,0,16,16));
-    radishSprite2.setTextureRect(sf::IntRect(16,0,16,16));
-    radishSprite3.setTextureRect(sf::IntRect(0,0,16,16));
-
-    radishSprite1.setScale(SCALE);
-    radishSprite2.setScale(SCALE);
-    radishSprite3.setScale(SCALE);
+    cropSprite.setTexture(cropsTexture);
+    cropSprite.setScale(SCALE);
 
     rockTexture.loadFromFile("./assets/rock.png");
     rockSprite.setTexture(rockTexture);
@@ -79,19 +73,30 @@ struct Farm {
      }
     }
 
-    for(Radish r : radishes) {
-      sf::Sprite radishSprite;
+    for(Crop r : crops) {
+      int tY;
+      switch (r.type) {
+		case Crop::Type::Radish:
+          tY = 0;
+		  break;
+		case Crop::Type::Eggplant:
+		  tY = 3 * 16;
+		  break;
+		case Crop::Type::Corn:
+          tY = 9 * 16;
+		  break;
+	  }
       if (r.status == 0) {
-        radishSprite = radishSprite1;
+		cropSprite.setTextureRect(sf::IntRect(32,tY,16,16));
       }
       if (r.status == 1) {
-        radishSprite = radishSprite2;
+		cropSprite.setTextureRect(sf::IntRect(16,tY,16,16));
       }
       if (r.status == 2) {
-        radishSprite = radishSprite3;
+		cropSprite.setTextureRect(sf::IntRect(0,tY,16,16));
       }
-      radishSprite.setPosition(sf::Vector2f(r.x * TILE_WIDTH + 10, r.y * TILE_WIDTH));
-      w->draw(radishSprite);
+      cropSprite.setPosition(sf::Vector2f(r.x * TILE_WIDTH + 10, r.y * TILE_WIDTH));
+      w->draw(cropSprite);
     }
 
     for(Rock r: rocks) {
@@ -104,7 +109,7 @@ struct Farm {
     if (rockAtTile(x, y)) {
       return false;
     }
-    for(Radish r : radishes) {
+    for(Crop r : crops) {
       if (r.x == x && r.y == y && r.status == 2) {
         return false;
       }
@@ -151,7 +156,7 @@ struct Farm {
         break;
       case(Inventory::Seeds):
         if (plotAtTile(x, y)) {
-          plantRadish(x, y);
+          plantCrop(x, y);
         } else {
           gameAlert.setMessage("Use your hoe!");
           gameAudio.playErrorSound();
@@ -170,11 +175,24 @@ struct Farm {
   }
 
   void harvestTile(int x, int y) {
-    for(int i = 0; i < radishes.size(); i++) {
-      if (radishes[i].status == 2 && radishes[i].x == x && radishes[i].y == y) {
-        gameAlert.setMessage("Got a radish!");
-        harvestedCrops.radishes++;
-        radishes.erase(radishes.begin() + i);
+    for(int i = 0; i < crops.size(); i++) {
+      if (crops[i].status == 2 && crops[i].x == x && crops[i].y == y) {
+		switch(crops[i].type) {
+		  case Crop::Type::Radish:
+			gameAlert.setMessage("Got radish!");
+			harvestedCrops.radishes++;
+			break;
+		  case Crop::Type::Eggplant:
+			gameAlert.setMessage("Got eggplant!");
+			harvestedCrops.eggplant++;
+			break;
+		  case Crop::Type::Corn:
+			gameAlert.setMessage("Got corn!");
+			harvestedCrops.corn++;
+			break;
+		}
+
+        crops.erase(crops.begin() + i);
       }
     }
   }
@@ -194,9 +212,9 @@ struct Farm {
 	  return;
 	}
 
-    for(int i = 0; i < radishes.size(); i++) {
-      if (radishes[i].x == x && radishes[i].y == y && radishes[i].status < 2) {
-        radishes[i].status++;
+    for(int i = 0; i < crops.size(); i++) {
+      if (crops[i].x == x && crops[i].y == y && crops[i].status < 2) {
+        crops[i].status++;
 		inventoryPtr->numFertilizer--;
       }
     }
@@ -221,24 +239,41 @@ struct Farm {
     animations.spawnAnimation(x, y, Animation::Type::Dig);
   }
 
-  void plantRadish(int x, int y) {
+  Crop::Type randomCropType() {
+	int rindex = rand() % 3; // 3 total crops
+	switch (rindex) {
+	  case 0:
+		return Crop::Type::Radish;
+		break;
+	  case 1:
+		return Crop::Type::Eggplant;
+		break;
+	  case 2:
+		return Crop::Type::Corn;
+		break;
+	}
+   return Crop::Type::Radish;
+}
+
+  void plantCrop(int x, int y) {
 	if(inventoryPtr->numSeeds < 1) {
       gameAlert.setMessage("No seeds!");
 	  return;
 	}
 
-    for(Radish r : radishes) {
+    for(Crop r : crops) {
       if (r.x == x && r.y == y) {
         return; // since there's already a radish here
       }
     }
 
     // create a new radish
-    Radish r;
+    Crop r;
     r.x = x;
     r.y = y;
     r.status = 0;
-    radishes.push_back(r);
+    r.type = randomCropType();
+    crops.push_back(r);
     gameAudio.playSeedSound();
 	inventoryPtr->numSeeds--;
   }
@@ -259,9 +294,9 @@ struct Farm {
 		plots[i].watered = false;
         x = plots[i].x;
 		y = plots[i].y;
-		for(int i = 0; i < radishes.size(); i++) {
-		  if (radishes[i].x == x && radishes[i].y == y && radishes[i].status < 2) {
-			radishes[i].status++;
+		for(int i = 0; i < crops.size(); i++) {
+		  if (crops[i].x == x && crops[i].y == y && crops[i].status < 2) {
+			crops[i].status++;
 		  }
 		}
 	  }

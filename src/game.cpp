@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 // constants and global variables
@@ -32,6 +33,8 @@ Farm farm;
 #include "SplashScreen.cpp"
 
 int main() {
+  srand(time(NULL)); // seed rng
+
   sf::Clock textureClock;
   sf::Clock gameClock;
 
