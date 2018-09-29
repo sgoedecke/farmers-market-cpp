@@ -28,5 +28,6 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 - [X] Make it so you can't hoe the inventory
 - [X] Add animations
 - [X] Limit inventory usage
-- [ ] Add other types of crop that can grow from seeds
+- [X] Add other types of crop that can grow from seeds
+- [X] Display harvested crops
 

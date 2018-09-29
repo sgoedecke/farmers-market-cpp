@@ -17,12 +17,6 @@ struct Rock {
   int y;
 };
 
-struct HarvestedCrops {
-  int radishes;
-  int eggplant;
-  int corn;
-};
-
 struct Farm {
   sf::Texture cropsTexture;
 
@@ -40,7 +34,6 @@ struct Farm {
   vector<Plot> plots;
   vector<Rock> rocks;
 
-  HarvestedCrops harvestedCrops;
   Inventory* inventoryPtr;
 
   void loadTexture() {
@@ -180,15 +173,15 @@ struct Farm {
 		switch(crops[i].type) {
 		  case Crop::Type::Radish:
 			gameAlert.setMessage("Got radish!");
-			harvestedCrops.radishes++;
+			inventoryPtr->harvestedCrops.radishes++;
 			break;
 		  case Crop::Type::Eggplant:
 			gameAlert.setMessage("Got eggplant!");
-			harvestedCrops.eggplant++;
+			inventoryPtr->harvestedCrops.eggplant++;
 			break;
 		  case Crop::Type::Corn:
 			gameAlert.setMessage("Got corn!");
-			harvestedCrops.corn++;
+			inventoryPtr->harvestedCrops.corn++;
 			break;
 		}
 

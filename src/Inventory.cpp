@@ -1,13 +1,22 @@
+struct HarvestedCrops {
+  int radishes;
+  int eggplant;
+  int corn;
+};
+
 struct Inventory {
   enum Item { Nothing, Fertilizer, Seeds, Hoe, WateringCan };
 
   sf::Texture texture;
   sf::Sprite sprite;
+  sf::Texture cropBannerTexture;
+  sf::Sprite cropBannerSprite;
   sf::Texture selectedTexture;
   sf::Sprite selectedSprite;
   sf::Text numItems;
   sf::Font font;
   Item selectedItem;
+  HarvestedCrops harvestedCrops;
   int numSeeds;
   int numFertilizer;
 
@@ -22,6 +31,12 @@ struct Inventory {
     texture.loadFromFile("./assets/inventory-banner.png");
     sprite.setTexture(texture);
     sprite.setScale(SCALE);
+
+    cropBannerTexture.loadFromFile("./assets/crop-banner.png");
+    cropBannerSprite.setTexture(cropBannerTexture);
+    cropBannerSprite.setScale(SCALE);
+    cropBannerSprite.setPosition(sf::Vector2f(10, WORLD_HEIGHT/2 - 300));
+
     selectedTexture.loadFromFile("./assets/selectedtile.png");
     selectedSprite.setTexture(selectedTexture);
     selectedSprite.setScale(SCALE);
@@ -37,13 +52,23 @@ struct Inventory {
     numItems.setString(std::to_string(numFertilizer));
     numItems.setPosition(sf::Vector2f((WORLD_WIDTH / 2) + (40 * 5), WORLD_HEIGHT - (8 * 5)));
 	w->draw(numItems);
-
 	// seed count
     numItems.setString(std::to_string(numSeeds));
     numItems.setPosition(sf::Vector2f((WORLD_WIDTH / 2) - (5 * 5), WORLD_HEIGHT - (8 * 5)));
 	w->draw(numItems);
-  }
+    // harvested crops
+	w->draw(cropBannerSprite);
 
+    numItems.setString(std::to_string(harvestedCrops.radishes));
+    numItems.setPosition(sf::Vector2f(110, WORLD_HEIGHT/2 - 180));
+	w->draw(numItems);
+    numItems.setString(std::to_string(harvestedCrops.corn));
+    numItems.setPosition(sf::Vector2f(110, WORLD_HEIGHT/2 - 65));
+	w->draw(numItems);
+    numItems.setString(std::to_string(harvestedCrops.eggplant));
+    numItems.setPosition(sf::Vector2f(110, WORLD_HEIGHT/2 + 45 ));
+	w->draw(numItems);
+  }
 
   void setSelectedTexture() {
     int pX;
