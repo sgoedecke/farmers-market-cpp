@@ -16,7 +16,7 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 
 ## Todo
 
-- [ ] Turn structs into classes with header files - make code more idiomatic
+- [ ] Turn structs into classes with header files - make code more idiomatic. (Idiomatic code's the only benefit of doing this, I think, since this project's small enough to not require partial compilation).
 - [X] Add the ability to plant crops
 - [X] Proper crop-planting sprites which mature into different crops
 - [X] Harvest crops and store them in the inventory
@@ -31,5 +31,5 @@ Code style is deliberately unidiomatic. For better or worse I'm trying to 'write
 - [X] Add other types of crop that can grow from seeds
 - [X] Display harvested crops
 - [ ] Handle ENTER on splash screen not skipping menu
-- [ ] Stop accidentally advancing the day by running home
+- [ ] Stop accidentally advancing the day by running home. Maybe add interior house area?
 

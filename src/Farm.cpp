@@ -18,8 +18,6 @@ struct Rock {
 };
 
 struct Farm {
-  sf::Texture cropsTexture;
-
   sf::Sprite cropSprite;
 
   sf::Texture plotTexture;
@@ -37,8 +35,6 @@ struct Farm {
   Inventory* inventoryPtr;
 
   void loadTexture() {
-    cropsTexture.loadFromFile("./assets/Crop_Spritesheet.png");
-
     cropSprite.setTexture(cropsTexture);
     cropSprite.setScale(SCALE);
 

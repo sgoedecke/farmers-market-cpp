@@ -39,12 +39,12 @@ struct Menu {
     gameState = OnMenu;
   }
 
-  bool handleKeysWithReturn() {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+  bool handleKeyRelease(sf::Keyboard::Key releasedKey) {
+    if (releasedKey == sf::Keyboard::A) {
       //switchFocus()
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+    } else if (releasedKey == sf::Keyboard::D) {
       //switchFocus()
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
+    } else if (releasedKey == sf::Keyboard::Return) {
       visible = false;
     }
     return visible;

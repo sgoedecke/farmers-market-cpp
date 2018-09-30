@@ -16,6 +16,8 @@ enum GameState { OnSplashScreen, OnFarm, OnMenu, OnMarket };
 
 GameState gameState;
 
+#include "textures.cpp"
+
 #include "Audio.cpp"
 Audio gameAudio;
 
@@ -40,6 +42,7 @@ Farm farm;
 
 
 int main() {
+  loadGlobalTextures();
   srand(time(NULL)); // seed rng
 
   sf::Clock textureClock;
@@ -115,9 +118,13 @@ int main() {
         case sf::Event::Closed:
           window.close();
           break;
-        case sf::Event::KeyPressed:
-		  if (event.key.code == sf::Keyboard::Escape) {
-			window.close();
+        case sf::Event::KeyReleased:
+          // handle menu inputs that shouldn't be repeated
+          if (gameState == OnMenu) {
+			bool stillOnMenu = menu.handleKeyRelease(event.key.code); 
+			if (!stillOnMenu) {
+			  gameState = OnFarm;
+			}
 		  }
 
           // if any key is pressed on the splash screen, start the game
@@ -126,11 +133,12 @@ int main() {
 			menu.displayIntroMenu();
           }
 
-		  if (gameState == OnMenu) {
-			bool stillOnMenu = menu.handleKeysWithReturn(); 
-			if (!stillOnMenu) {
-			  gameState = OnFarm;
-			}
+          if (gameState == OnMarket) {
+            market.handleKeyRelease(event.key.code);
+          }
+        case sf::Event::KeyPressed:
+		  if (event.key.code == sf::Keyboard::Escape) {
+			window.close();
 		  }
 
 		  if (gameState == OnFarm) {
@@ -142,10 +150,6 @@ int main() {
 				  player.inventory.selectedItem);
 			}
 		  }
-
-          if (gameState == OnMarket) {
-            // handle market controls
-          }
 		  break;
         default:
           break;

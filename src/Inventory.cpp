@@ -125,6 +125,7 @@ struct Inventory {
         menu.displayMarketMenu();
 		break;
 	  case Friday:
+        gameState = OnMarket;
         weekday = Monday;
 		break;
 	} 
